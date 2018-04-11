@@ -239,7 +239,7 @@ function openDatabase() {
           id integer primary key autoincrement,
           title text,
           done integer not null default 0 check(done in (0, 1)),
-          created text not null default current_date
+          created text not null default current_timestamp
         )`, (err) => {
           if (err) {
             reject(err);
