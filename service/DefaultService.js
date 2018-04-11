@@ -1,5 +1,5 @@
-'use strict';
-
+const TodoModel = require("../models/TodoModel");
+const Todo = require("../models/Todo");
 
 /**
  * Add a new todo
@@ -8,10 +8,10 @@
  * body Todo Todo object that needs to be added to the db
  * no response value expected for this operation
  **/
-exports.addTodo = function(body) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+exports.addTodo = async function(body) {
+  const model = new TodoModel();
+  const todo = new Todo(body.title, 0, body.done);
+  await model.create(todo);
 }
 
 
@@ -22,10 +22,9 @@ exports.addTodo = function(body) {
  * todoId Long Todo id to delete
  * no response value expected for this operation
  **/
-exports.deleteTodo = function(todoId) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+exports.deleteTodo = async function(todoId) {
+  const model = new TodoModel();
+  await model.remove(todoId);
 }
 
 
@@ -36,20 +35,10 @@ exports.deleteTodo = function(todoId) {
  * todoId Long ID of pet to return
  * returns Todo
  **/
-exports.getTodoById = function(todoId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "id" : 0.80082819046101150206595775671303272247314453125,
-  "title" : "title",
-  "done" : true
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+exports.getTodoById = async function(todoId) {
+  const model = new TodoModel();
+  const todo = await model.getTodoById(todoId);
+  return todo;
 }
 
 
@@ -59,24 +48,10 @@ exports.getTodoById = function(todoId) {
  *
  * returns List
  **/
-exports.getTodos = function() {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "id" : 0.80082819046101150206595775671303272247314453125,
-  "title" : "title",
-  "done" : true
-}, {
-  "id" : 0.80082819046101150206595775671303272247314453125,
-  "title" : "title",
-  "done" : true
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+exports.getTodos = async function() {
+  const model = new TodoModel();
+  const list = await model.getAll();
+  return list;
 }
 
 
@@ -87,15 +62,19 @@ exports.getTodos = function() {
  * body Todo Todo object that needs to be added to the db
  * no response value expected for this operation
  **/
-exports.updateTodo = function(body) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+exports.updateTodo = async function(body) {
+  const model = new TodoModel();
+  const todo = new Todo(
+    body.title,
+    body.id,
+    body.done
+  );
+  await model.update(todo);
 }
 
 
 /**
- * Updates a pet in the store with form data
+ * Updates a todo in the store with form data
  * 
  *
  * todoId Long ID of todo that needs to be updated
@@ -103,9 +82,9 @@ exports.updateTodo = function(body) {
  * done Boolean Updated status of the todo (optional)
  * no response value expected for this operation
  **/
-exports.updateTodoWithForm = function(todoId,title,done) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+exports.updateTodoWithForm = async function(todoId,title,done) {
+  const model = new TodoModel();
+  const todo = new Todo(title, todoId, done);
+  await model.update(todo);
 }
 
